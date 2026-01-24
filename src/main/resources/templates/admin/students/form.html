@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${mode == 'create' ? 'Добавить ученика' : 'Редактировать ученика'}"></title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+
+<div class="layout">
+    <aside class="sidebar">
+        <div class="brand">Tutor School</div>
+
+        <nav class="menu">
+            <a th:href="@{/admin}">Дашборд</a>
+            <a class="active" th:href="@{/admin/students}">Ученики</a>
+            <a th:href="@{/admin/teachers}">Преподаватели</a>
+            <a th:href="@{/admin/groups}">Группы</a>
+            <a th:href="@{/admin/lessons}">Занятия</a>
+            <a th:href="@{/admin/payments}">Оплаты</a>
+        </nav>
+
+        <form th:action="@{/logout}" method="post" style="margin-top:auto;">
+            <button class="ghost" type="submit">Выйти</button>
+        </form>
+    </aside>
+
+    <main class="content">
+        <div class="topbar">
+            <h2 th:text="${mode == 'create' ? 'Добавить ученика' : 'Редактировать ученика'}"></h2>
+            <a class="muted" th:href="@{/admin/students}">← назад</a>
+        </div>
+
+        <div class="panel" style="max-width:680px;">
+            <form th:object="${student}"
+                  th:action="${mode == 'create'} ? @{/admin/students/new} : @{/admin/students/{id}/edit(id=${student.id})}"
+                  method="post">
+
+                <label>ФИО *</label>
+                <input th:field="*{fullName}" placeholder="Например: Магомед Алиев" required>
+                <div class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+
+                <label>Телефон</label>
+                <input th:field="*{phone}" placeholder="+7...">
+
+                <label>Предмет</label>
+                <input th:field="*{subject}" placeholder="Математика / Английский">
+
+                <label>Статус</label>
+                <select th:field="*{status}">
+                    <option th:each="st : ${statuses}" th:value="${st}" th:text="${st}"></option>
+                </select>
+
+                <label>Примечание</label>
+                <textarea th:field="*{note}" rows="4" placeholder="Например: платит раз в месяц"></textarea>
+
+                <div class="row" style="margin-top:14px;">
+                    <button type="submit" style="width:auto; padding:10px 16px;">
+                        Сохранить
+                    </button>
+                    <a class="muted" th:href="@{/admin/students}" style="margin-left:12px;">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

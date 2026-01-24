@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Админка — Главная</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+
+<div class="layout">
+    <aside class="sidebar">
+        <div class="brand">Tutor School</div>
+
+        <nav class="menu">
+            <a class="active" th:href="@{/admin}">Дашборд</a>
+            <a th:href="@{/admin/students}">Ученики</a>
+            <a th:href="@{/admin/teachers}">Преподаватели</a>
+            <a th:href="@{/admin/groups}">Группы</a>
+            <a th:href="@{/admin/lessons}">Занятия</a>
+            <a th:href="@{/admin/payments}">Оплаты</a>
+        </nav>
+
+        <form th:action="@{/logout}" method="post" style="margin-top:auto;">
+            <button class="ghost" type="submit">Выйти</button>
+        </form>
+    </aside>
+
+    <main class="content">
+        <div class="topbar">
+            <h2>Дашборд</h2>
+            <div class="muted">Сегодня: <span th:text="${today}"></span></div>
+        </div>
+
+        <div class="grid">
+            <div class="panel">
+                <h3>Занятия сегодня</h3>
+                <div class="big">0</div>
+                <div class="muted">Подключим после добавления уроков</div>
+            </div>
+
+            <div class="panel">
+                <h3>Долги</h3>
+                <div class="big">0 ₽</div>
+                <div class="muted">Подключим после оплат</div>
+            </div>
+
+            <div class="panel">
+                <h3>Поступления за месяц</h3>
+                <div class="big">0 ₽</div>
+                <div class="muted">Подключим после оплат</div>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

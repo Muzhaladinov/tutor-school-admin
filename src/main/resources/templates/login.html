@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Вход — Админка</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="bg">
+
+<div class="card">
+    <h1>Админка школы</h1>
+    <p class="muted">Вход для администратора</p>
+
+    <div th:if="${param.error}" class="alert alert-danger">
+        Неверный логин или пароль
+    </div>
+    <div th:if="${param.logout}" class="alert alert-ok">
+        Вы вышли из системы
+    </div>
+
+    <form method="post" th:action="@{/login}">
+        <label>Логин</label>
+        <input name="username" type="text" placeholder="admin" required>
+
+        <label>Пароль</label>
+        <input name="password" type="password" placeholder="••••••••" required>
+
+        <button type="submit">Войти</button>
+    </form>
+
+    <div class="hint">
+        Дефолт: <b>admin</b> / <b>admin123</b>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${mode == 'create' ? 'Добавить группу' : 'Редактировать группу'}"></title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+
+<div class="layout">
+    <aside class="sidebar">
+        <div class="brand">Tutor School</div>
+
+        <nav class="menu">
+            <a th:href="@{/admin}">Дашборд</a>
+            <a th:href="@{/admin/students}">Ученики</a>
+            <a th:href="@{/admin/teachers}">Преподаватели</a>
+            <a class="active" th:href="@{/admin/groups}">Группы</a>
+            <a th:href="@{/admin/lessons}">Занятия</a>
+            <a th:href="@{/admin/payments}">Оплаты</a>
+        </nav>
+
+        <form th:action="@{/logout}" method="post" style="margin-top:auto;">
+            <button class="ghost" type="submit">Выйти</button>
+        </form>
+    </aside>
+
+    <main class="content">
+        <div class="topbar">
+            <h2 th:text="${mode == 'create' ? 'Добавить группу' : 'Редактировать группу'}"></h2>
+            <a class="muted" th:href="@{/admin/groups}">← назад</a>
+        </div>
+
+        <div class="panel" style="max-width:820px;">
+            <form th:object="${form}"
+                  th:action="${mode == 'create'} ? @{/admin/groups/new} : @{/admin/groups/{id}/edit(id=${groupId})}"
+                  method="post">
+
+                <label>Название *</label>
+                <input th:field="*{name}" placeholder="Например: Английский A1" required>
+                <div class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+
+                <label>Предмет</label>
+                <input th:field="*{subject}" placeholder="Английский / Математика">
+
+                <label>Преподаватель</label>
+                <select th:field="*{teacherId}">
+                    <option value="">— не назначен —</option>
+                    <option th:each="t : ${teachers}" th:value="${t.id}" th:text="${t.fullName}"></option>
+                </select>
+
+                <label>Цена (₽)</label>
+                <input th:field="*{priceRub}" type="number" min="0" placeholder="500">
+
+                <label>Ученики (выбери несколько)</label>
+                <div class="panel" style= "border-radius:12px;">
+                    <div class="muted" style="margin-bottom:8px;">Если учеников много — потом сделаем поиск/фильтр.</div>
+
+                    <div class="checkgrid">
+                        <label th:each="s : ${students}" class="checkitem">
+                            <input type="checkbox"
+                                   th:name="studentIds"
+                                   th:value="${s.id}"
+                                   th:checked="${form.studentIds != null and form.studentIds.contains(s.id)}">
+                            <span th:text="${s.fullName}"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:14px;">
+                    <button type="submit" style="width:auto; padding:10px 16px;">Сохранить</button>
+                    <a class="muted" th:href="@{/admin/groups}" style="margin-left:12px;">Отмена</a>
+                </div>
+
+            </form>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>
